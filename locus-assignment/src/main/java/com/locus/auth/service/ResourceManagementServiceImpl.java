@@ -7,6 +7,7 @@ import com.locus.auth.enums.ValidationError;
 import com.locus.auth.exception.AccessValidationException;
 import com.locus.auth.model.Resource;
 import com.locus.auth.model.User;
+import com.locus.auth.processor.AsynchTaskProcessor;
 import com.locus.auth.validator.AccessValidator;
 
 import java.util.Optional;
@@ -43,8 +44,13 @@ public class ResourceManagementServiceImpl implements ResourceManagementService 
         if (error.isPresent()) {
             throw new AccessValidationException(error.get());
         }
-        //updates if exists and add if not exists
-        database.saveOrUpdateResource(resource);
+        //updates if exists and add if not exists Asynchronously
+        AsynchTaskProcessor.submitTask(AsynchTaskProcessor
+                .SaveWorker
+                .builder()
+                .resource(resource)
+                .callback(() -> System.out.println("Updated Successfully"))
+                .build());
     }
 
     @Override
@@ -58,7 +64,12 @@ public class ResourceManagementServiceImpl implements ResourceManagementService 
             throw new AccessValidationException(error.get());
         }
         //updates if exists and add if not exists
-        database.deleteResource(resourceId);
+        AsynchTaskProcessor.submitTask(AsynchTaskProcessor
+                .DeleteWorker
+                .builder()
+                .resourceId(resourceId)
+                .callback(() -> System.out.println("Deleted Successfully"))
+                .build());
     }
 
     private final static class ResourceManagementServiceHolder {

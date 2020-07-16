@@ -4,6 +4,7 @@ import com.locus.auth.dao.InMemoryDb;
 import com.locus.auth.exception.AccessValidationException;
 import com.locus.auth.model.Resource;
 import com.locus.auth.model.User;
+import com.locus.auth.processor.AsynchTaskProcessor;
 import com.locus.auth.service.ResourceManagementService;
 import com.locus.auth.service.ResourceManagementServiceImpl;
 import com.locus.auth.util.DbConfig;
@@ -24,6 +25,7 @@ public class App {
         container.readUserTest();
         container.writeUserTest();
         container.deleteUserTest();
+        AsynchTaskProcessor.shutdown();
     }
 
 
