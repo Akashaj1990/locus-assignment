@@ -13,16 +13,16 @@ import java.util.concurrent.TimeUnit;
 public class AsynchTaskProcessor {
 
     private static final InMemoryDb database = InMemoryDb.getInstance();
-    private static final ExecutorService excecutor = Executors.newFixedThreadPool(50);
+    private static final ExecutorService executor = Executors.newFixedThreadPool(50);
 
     public static void submitTask(Runnable worker) {
-        excecutor.submit(worker);
+        executor.submit(worker);
     }
 
     public static void shutdown() {
         try {
-            excecutor.shutdown();
-            excecutor.awaitTermination(100, TimeUnit.SECONDS);
+            executor.shutdown();
+            executor.awaitTermination(100, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
