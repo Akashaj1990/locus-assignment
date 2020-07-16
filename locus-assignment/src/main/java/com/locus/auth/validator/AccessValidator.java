@@ -11,7 +11,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class AccessValidator {
+public final class AccessValidator {
+
+    private AccessValidator() {
+
+    }
 
     private final static List<BaseValidator> accessValidationList = List.of(new RequestValidation(), new AccessValidation());
 
