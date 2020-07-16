@@ -13,5 +13,4 @@ public class ValidationDto {
     private User user;
     private ActionType action;
     private Long resourceId;
-
 }

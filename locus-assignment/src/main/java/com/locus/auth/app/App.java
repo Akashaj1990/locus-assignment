@@ -22,6 +22,8 @@ public class App {
         System.out.println("----Initializing Test----");
         container.AdminUserTest();
         container.readUserTest();
+        container.writeUserTest();
+        container.deleteUserTest();
     }
 
 
@@ -59,4 +61,50 @@ public class App {
             System.out.println("Read Test Passed");
         }
     }
+
+    private void writeUserTest() {
+        User writeUser = InMemoryDb.getInstance().getUser("Write User");
+        try {
+            service.updateResource(InMemoryDb.getInstance().getResource(10000L)
+                    , writeUser);
+            System.out.println("Write User Test Passes For Updating Resource");
+        } catch (AccessValidationException e) {
+            System.out.println(e);
+            System.out.println("Write User Test Failed");
+        }
+
+        try {
+            service.deleteResource(1000L
+                    , writeUser);
+            System.out.println("Write User Test Failed For Deletion");
+        } catch (AccessValidationException e) {
+            System.out.println(e);
+            System.out.println("Write User Test Passes For Deletion");
+        }
+    }
+
+    private void deleteUserTest() {
+        User writeUser = InMemoryDb.getInstance().getUser("Delete User");
+        try {
+            service.deleteResource(10000L
+                    , writeUser);
+
+            if (null == InMemoryDb.getInstance().getResource(1000L)) {
+                System.out.println("Delete User Test Passes For Deletion");
+            }
+        } catch (AccessValidationException e) {
+            System.out.println(e);
+            System.out.println("Delete User Test Failed");
+        }
+
+        try {
+            service.updateResource(InMemoryDb.getInstance().getResource(10001L)
+                    , writeUser);
+            System.out.println("Delete User Test Failed For Updation");
+        } catch (AccessValidationException e) {
+            System.out.println(e);
+            System.out.println("Delete User Test Passes For Updation");
+        }
+    }
+
 }
